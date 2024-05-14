@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receipt</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .receipt {
+            max-width: 400px;
+            margin: 0 auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+        }
+        .receipt h1 {
+            text-align: center;
+        }
+        .receipt p {
+            margin: 10px 0;
+        }
+        .receipt .details {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="receipt">
+    <h1>Receipt</h1>
+    <p><strong>Date:</strong> <span id="date"></span></p>
+    <p><strong>Transaction ID:</strong> <span id="transactionId"></span></p>
+    <p><strong>Items:</strong></p>
+    <ul id="itemsList">
+        <!-- Items will be added dynamically here -->
+    </ul>
+    <p><strong>Total:</strong> <span id="totalAmount"></span></p>
+    <div class="details">
+        <h2>Payment Details</h2>
+        <p><strong>Payment Method:</strong> Credit Card</p>
+        <p><strong>Card Number:</strong> **** **** **** 1234</p>
+        <p><strong>Expiration Date:</strong> 12/26</p>
+    </div>
+</div>
+
+<script>
+    // Retrieve cart items from local storage
+    var cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+    // Function to calculate total amount
+    function calculateTotal() {
+        return cartItems.reduce(function(total, item) {
+            return total + (item.price * item.quantity);
+        }, 0);
+    }
+
+    // Update receipt with data
+    document.getElementById("date").innerText = new Date().toLocaleDateString();
+    document.getElementById("transactionId").innerText = "#" + Math.floor(Math.random() * 1000000);
+
+    var itemsList = document.getElementById("itemsList");
+    cartItems.forEach(function(item) {
+        var li = document.createElement("li");
+        li.innerText = item.productName + " - $" + (item.price * item.quantity).toFixed(2); // Include quantity in the display
+        itemsList.appendChild(li);
+    });
+
+    document.getElementById("totalAmount").innerText = "$" + calculateTotal().toFixed(2);
+</script>
+
+</body>
+</html>

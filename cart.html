@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cart - Sole Spectrum</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Sole Spectrum</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="cart.html">Cart</a></li>
+				<li><a href="checkout.html">Checkout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section class="cart-items">
+        <h2>Shopping Cart</h2>
+        <ul id="cartItems"></ul>
+		<button onclick="clearCart()">Clear Cart</button>
+		<a href="checkout.html"><button>Proceed to Checkout</button></a>
+            <!-- Cart items will be dynamically added here -->
+    </section>
+
+    <footer>
+        <p>&copy; 2024 Sole Spectrum. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
+
+<style>
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.cart-items {
+    padding: 20px;
+}
+
+.cart-items h2 {
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+</style>
+
+<script>
+	// Retrieve cart items from local storage
+    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+    // Display cart items in the cart page
+    const cartItemsList = document.getElementById('cartItems');
+    cartItems.forEach(item => {
+        const listItem = document.createElement('li');
+		
+		// Display item name and quantity
+        listItem.textContent = `${item.productName} - Quantity: ${item.quantity || 1} - $${item.price.toFixed(2)}`;
+		
+		// Add increase button
+		const increaseButton = document.createElement('button');
+		increaseButton.textContent = '+';
+		increaseButton.addEventListener('click', () => increaseQuantity(item));
+
+		// Add decrease button
+		const decreaseButton = document.createElement('button');
+		decreaseButton.textContent = '-';
+		decreaseButton.addEventListener('click', () => decreaseQuantity(item));
+
+		listItem.appendChild(increaseButton);
+		listItem.appendChild(decreaseButton);
+		
+	// Function to increase quantity of an item
+	function increaseQuantity(item) {
+		item.quantity = (item.quantity || 1) + 1;
+		updateCart();
+	}
+
+	// Function to decrease quantity of an item
+	function decreaseQuantity(item) {
+		if (item.quantity && item.quantity > 1) {
+        item.quantity -= 1;
+        updateCart();
+    }
+}
+        // Add a remove button for each item
+        const removeButton = document.createElement('button');
+        removeButton.textContent = 'Remove';
+        // Use item.productName to pass to removeItem function
+        removeButton.addEventListener('click', () => removeItem(item.productName)); // Pass productName to removeItem function
+
+        listItem.appendChild(removeButton);
+        cartItemsList.appendChild(listItem);
+    });
+	
+	// Function to increase quantity of an item
+        function increaseQuantity(item) {
+            item.quantity = (item.quantity || 1) + 1;
+            updateCart();
+        }
+
+        // Function to decrease quantity of an item
+        function decreaseQuantity(item) {
+            if (item.quantity && item.quantity > 1) {
+                item.quantity -= 1;
+                updateCart();
+            }
+        }
+
+        // Function to update cart after modifying quantity or removing items
+        function updateCart() {
+            // Update local storage with the updated cartItems array
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            // Refresh the page to reflect the changes
+            location.reload();
+        }
+	
+
+    // Function to remove an item from the cart
+    function removeItem(productName) {
+        // Filter out the item with the specified product name
+        const updatedCartItems = cartItems.filter(item => item.productName !== productName);
+
+        // Update local storage with the updated cartItems array
+        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+
+        // Refresh the page to reflect the changes
+        location.reload();
+    }
+
+    // Function to clear the entire cart
+    function clearCart() {
+        localStorage.removeItem('cartItems'); // Remove the cart items from local storage
+        location.reload(); // Refresh the page to reflect the changes
+    }
+</script>

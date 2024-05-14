@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Checkout</h1>
+        <nav>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="products.html">Products</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li><a href="contact.html">Contact Us</a></li>
+                <li><a href="register.html">Register</a></li>
+                <li><a href="cart.html">Cart</a></li>
+                <li><a href="checkout.html">Checkout</a></li>
+            </ul>
+        </nav>
+    </header>
+<center>
+    <section class="checkout">
+        <h2>Checkout</h2>
+        <form id="checkoutForm" onsubmit="submitCheckout(event)">
+            <div>
+                <label for="fullName">Full Name:</label>
+                <input type="text" id="fullName" name="fullName" required>
+            </div>
+            <div>
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required>
+            </div>
+            <div>
+                <label for="address">Address:</label>
+                <textarea id="address" name="address" required></textarea>
+            </div>
+            <div>
+                <label for="shippingMethod">Shipping Method:</label>
+                <select id="shippingMethod" name="shippingMethod">
+                    <option value="standard">Standard Shipping (3-7 business days)</option>
+                    <option value="express">Express Shipping (2-5 business days)</option>
+                </select>
+            </div>
+            <div>
+                <label for="paymentMethod">Payment Method:</label>
+                <select id="paymentMethod" name="paymentMethod">
+                    <option value="creditCard">Credit Card</option>
+                    <option value="paypal">PayPal</option>
+                </select>
+            </div>
+            <button type="submit" onclick="completePurchase()">Complete Purchase</button>
+        </form>
+    </section>
+</center>
+
+    <footer>
+        <p>&copy; 2024 Shopping Cart. All rights reserved.</p>
+    </footer>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+}
+
+nav ul {
+    list-style: none;
+}
+
+nav ul li {
+    display: inline;
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.cart-items {
+    padding: 20px;
+}
+
+.cart-items h2 {
+    margin-bottom: 20px;
+}
+
+.cart-item {
+    border-bottom: 1px solid #ccc;
+    padding: 10px 0;
+}
+
+footer {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+}
+
+</style>
+
+<script>
+    function submitCheckout(event) {
+            event.preventDefault();
+            
+            const formData = new FormData(event.target);
+            const formObject = Object.fromEntries(formData.entries());
+            console.log(formObject);
+            
+            window.location.href = 'confirmation.html';
+        }
+</script>
