@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Receipt Page</title>
+	
+<body>
+    <h1>Receipt</h1>
+    <div class="receipt">
+        <div class="receipt-items">
+            <!-- JavaScript to populate receipt items -->
+        </div>
+        <div class="total">
+            <strong>Total:</strong> $<span id="totalAmount"></span>
+        </div>
+
+<script>
+	var cart = [];
+
+    function addToCart(productName, price) {
+        cart.push({ name: productName, price: price });
+        alert("Added " + productName + " to cart.");
+    }
+
+    function displayReceipt() {
+        var message = "Receipt:\n\n";
+
+        if (cart.length === 0) {
+            message += "Your cart is empty.";
+        } else {
+            cart.forEach(function(item) {
+                message += item.name + " - $" + item.price.toFixed(2) + "\n";
+            });
+        }
+
+        alert(message);
+    }
+</script>
+
+<button onclick="displayReceipt()">View Receipt</button>
+
+
+</body>
+</html>
