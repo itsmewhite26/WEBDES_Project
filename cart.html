@@ -89,172 +89,66 @@ footer {
 </style>
 
 <script>
-	<script>
     // Retrieve cart items from local storage
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+        const cartItemsList = document.getElementById('cartItems');
+        let totalAmount = 0;
 
-    // Display cart items in the cart page
-    const cartItemsList = document.getElementById('cartItems');
-    let totalAmount = 0; // Initialize total amount variable
+        // Display cart items
+        cartItems.forEach(item => {
+            const listItem = document.createElement('li');
+            listItem.textContent = `${item.productName} - Quantity: ${item.quantity || 1} - $${(item.quantity * item.price).toFixed(2)}`;
+            totalAmount += (item.quantity || 1) * item.price;
 
-    cartItems.forEach(item => {
-        const listItem = document.createElement('li');
+            const increaseButton = document.createElement('button');
+            increaseButton.textContent = '+';
+            increaseButton.addEventListener('click', () => increaseQuantity(item));
 
-        // Display item name and quantity
-        listItem.textContent = `${item.productName} - Quantity: ${item.quantity || 1} - $${(item.quantity * item.price).toFixed(2)}`;
+            const decreaseButton = document.createElement('button');
+            decreaseButton.textContent = '-';
+            decreaseButton.addEventListener('click', () => decreaseQuantity(item));
 
-        // Calculate total amount for each item and add to the total
-        totalAmount += (item.quantity || 1) * item.price;
+            listItem.appendChild(increaseButton);
+            listItem.appendChild(decreaseButton);
 
-        // Add increase button
-        const increaseButton = document.createElement('button');
-        increaseButton.textContent = '+';
-        increaseButton.addEventListener('click', () => increaseQuantity(item));
+            const removeButton = document.createElement('button');
+            removeButton.textContent = 'Remove';
+            removeButton.addEventListener('click', () => removeItem(item.productName));
 
-        // Add decrease button
-        const decreaseButton = document.createElement('button');
-        decreaseButton.textContent = '-';
-        decreaseButton.addEventListener('click', () => decreaseQuantity(item));
+            listItem.appendChild(removeButton);
+            cartItemsList.appendChild(listItem);
+        });
 
-        listItem.appendChild(increaseButton);
-        listItem.appendChild(decreaseButton);
+        // Display total amount
+        const totalElement = document.createElement('p');
+        totalElement.textContent = `Total: $${totalAmount.toFixed(2)}`;
+        cartItemsList.appendChild(totalElement);
 
-        // Add a remove button for each item
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        // Use item.productName to pass to removeItem function
-        removeButton.addEventListener('click', () => removeItem(item.productName)); // Pass productName to removeItem function
-
-        listItem.appendChild(removeButton);
-        cartItemsList.appendChild(listItem);
-    });
-
-    // Display total amount
-    const totalElement = document.createElement('p');
-    totalElement.textContent = `Total: $${totalAmount.toFixed(2)}`;
-    cartItemsList.appendChild(totalElement);
-
-    // Function to increase quantity of an item
-    function increaseQuantity(item) {
-        item.quantity = (item.quantity || 1) + 1;
-        updateCart();
-    }
-
-    // Function to decrease quantity of an item
-    function decreaseQuantity(item) {
-        if (item.quantity && item.quantity > 1) {
-            item.quantity -= 1;
+        function increaseQuantity(item) {
+            item.quantity = (item.quantity || 1) + 1;
             updateCart();
         }
-    }
 
-    // Function to update cart after modifying quantity or removing items
-    function updateCart() {
-        // Update local storage with the updated cartItems array
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        // Refresh the page to reflect the changes
-        location.reload();
-    }
-
-    // Function to remove an item from the cart
-    function removeItem(productName) {
-        // Filter out the item with the specified product name
-        const updatedCartItems = cartItems.filter(item => item.productName !== productName);
-
-        // Update local storage with the updated cartItems array
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-
-        // Refresh the page to reflect the changes
-        location.reload();
-    }
-
-    // Function to clear the entire cart
-    function clearCart() {
-        localStorage.removeItem('cartItems'); // Remove the cart items from local storage
-        location.reload(); // Refresh the page to reflect the changes
-    }
-
-    // Retrieve cart items from local storage
-    let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
-
-    // Display cart items in the cart page
-    const cartItemsList = document.getElementById('cartItems');
-    let totalAmount = 0; // Initialize total amount variable
-
-    cartItems.forEach(item => {
-        const listItem = document.createElement('li');
-
-        // Display item name and quantity
-        listItem.textContent = `${item.productName} - Quantity: ${item.quantity || 1} - $${(item.quantity * item.price).toFixed(2)}`;
-
-        // Calculate total amount for each item and add to the total
-        totalAmount += (item.quantity || 1) * item.price;
-
-        // Add increase button
-        const increaseButton = document.createElement('button');
-        increaseButton.textContent = '+';
-        increaseButton.addEventListener('click', () => increaseQuantity(item));
-
-        // Add decrease button
-        const decreaseButton = document.createElement('button');
-        decreaseButton.textContent = '-';
-        decreaseButton.addEventListener('click', () => decreaseQuantity(item));
-
-        listItem.appendChild(increaseButton);
-        listItem.appendChild(decreaseButton);
-
-        // Add a remove button for each item
-        const removeButton = document.createElement('button');
-        removeButton.textContent = 'Remove';
-        // Use item.productName to pass to removeItem function
-        removeButton.addEventListener('click', () => removeItem(item.productName)); // Pass productName to removeItem function
-
-        listItem.appendChild(removeButton);
-        cartItemsList.appendChild(listItem);
-    });
-
-    // Display total amount
-    const totalElement = document.createElement('p');
-    totalElement.textContent = `Total: $${totalAmount.toFixed(2)}`;
-    cartItemsList.appendChild(totalElement);
-
-    // Function to increase quantity of an item
-    function increaseQuantity(item) {
-        item.quantity = (item.quantity || 1) + 1;
-        updateCart();
-    }
-
-    // Function to decrease quantity of an item
-    function decreaseQuantity(item) {
-        if (item.quantity && item.quantity > 1) {
-            item.quantity -= 1;
-            updateCart();
+        function decreaseQuantity(item) {
+            if (item.quantity && item.quantity > 1) {
+                item.quantity -= 1;
+                updateCart();
+            }
         }
-    }
 
-    // Function to update cart after modifying quantity or removing items
-    function updateCart() {
-        // Update local storage with the updated cartItems array
-        localStorage.setItem('cartItems', JSON.stringify(cartItems));
-        // Refresh the page to reflect the changes
-        location.reload();
-    }
+        function updateCart() {
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+            location.reload();
+        }
 
-    // Function to remove an item from the cart
-    function removeItem(productName) {
-        // Filter out the item with the specified product name
-        const updatedCartItems = cartItems.filter(item => item.productName !== productName);
+        function removeItem(productName) {
+            const updatedCartItems = cartItems.filter(item => item.productName !== productName);
+            localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
+            location.reload();
+        }
 
-        // Update local storage with the updated cartItems array
-        localStorage.setItem('cartItems', JSON.stringify(updatedCartItems));
-
-        // Refresh the page to reflect the changes
-        location.reload();
-    }
-
-    // Function to clear the entire cart
-    function clearCart() {
-        localStorage.removeItem('cartItems'); // Remove the cart items from local storage
-        location.reload(); // Refresh the page to reflect the changes
-    }
+        function clearCart() {
+            localStorage.removeItem('cartItems');
+            location.reload();
+        }
 </script>
